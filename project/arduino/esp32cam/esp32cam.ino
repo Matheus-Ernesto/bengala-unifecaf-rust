@@ -1,0 +1,137 @@
+#include "esp_camera.h"
+#include <WiFi.h>
+#include <ArduinoWebsockets.h>
+
+using namespace websockets;
+
+// Configurações de rede
+// MODIFICAR ESTA PARTE PARA SUA REDE
+
+// NOMDE DO SEU WIFI
+const char* ssid = "CASA-2.4G";
+// SUA SENHA DE WIFI
+const char* password = "25122003";
+// SEU IP, ONDE O SERVIDOR ESTA ABERTO
+const char* websockets_server_host = "192.168.10.4";
+// PORTA ESCOLHIDA PARA ABRIR O SERVIDOR
+const uint16_t websockets_server_port = 8765;
+
+// FIM Configurações de rede
+
+WebsocketsClient client;
+
+bool respostaRecebida = false;
+String respostaServidor = "";
+
+// Configurações
+void setup() {
+  // Iniciar transmissão de logs com o computador (se conectado por cabo USB)
+  Serial.begin(115200);
+  Serial.setDebugOutput(true);
+  Serial.println();
+
+  // Configuração da câmera
+  camera_config_t config;
+  config.ledc_channel = LEDC_CHANNEL_0;
+  config.ledc_timer = LEDC_TIMER_0;
+  config.pin_d0 = 5;
+  config.pin_d1 = 18;
+  config.pin_d2 = 19;
+  config.pin_d3 = 21;
+  config.pin_d4 = 36;
+  config.pin_d5 = 39;
+  config.pin_d6 = 34;
+  config.pin_d7 = 35;
+  config.pin_xclk = 0;
+  config.pin_pclk = 22;
+  config.pin_vsync = 25;
+  config.pin_href = 23;
+  config.pin_sccb_sda = 26;
+  config.pin_sccb_scl = 27;
+  config.pin_pwdn = 32;
+  config.pin_reset = -1;
+  config.xclk_freq_hz = 20000000;
+  config.pixel_format = PIXFORMAT_JPEG;
+  config.fb_count = 1;
+  // Modificar o campo abaixo para alterar a resolução de imagem 
+  config.frame_size = FRAMESIZE_VGA;
+  // Modificar a qualidade de foto - 0 = 100%; 31 = 50%; 63 = 0% (a imagem fica bem borrada no 63, recomendado 12)
+  config.jpeg_quality = 12;
+
+  // Inicialização do sensor e ajustes de imagem
+  sensor_t *s = esp_camera_sensor_get();
+  if (s) {
+    s->set_brightness(s, 1);   // Brilho (-2 a 2)
+    s->set_contrast(s, 2);     // Contraste (-2 a 2)
+    s->set_saturation(s, 2);   // Saturação (-2 a 2)
+    s->set_special_effect(s, 2);
+  }
+
+  // Inicializar câmera
+  if (esp_camera_init(&config) != ESP_OK) {
+    Serial.println("Falha na inicialização da câmera");
+    return;
+  }
+
+  // Conectar ao Wi-Fi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi conectado");
+
+  // Conectar ao servidor WebSocket
+  if (client.connect(websockets_server_host, websockets_server_port, "/")) {
+    Serial.println("Conectado ao servidor WebSocket");
+  } else {
+    Serial.println("Falha na conexão WebSocket");
+  }
+
+  // Callback para mensagens recebidas
+  client.onMessage([](WebsocketsMessage message) {
+    respostaServidor = message.data();
+    respostaRecebida = true;
+    Serial.print("Resposta: ");
+    Serial.println(respostaServidor);
+  });
+}
+
+// Repete infinitamente
+void loop() {
+  if (client.available()) {
+    client.poll(); // Processa eventos pendentes, inclusive mensagens
+
+    // Captura e envia a foto
+    camera_fb_t *fb = esp_camera_fb_get();
+    if (!fb) {
+      Serial.println("Falha ao capturar imagem");
+      return;
+    }
+
+    Serial.println("Foto enviada");
+    client.sendBinary((const char*)fb->buf, fb->len);
+    esp_camera_fb_return(fb);
+
+    // Espera a resposta do servidor antes de continuar
+    respostaRecebida = false;
+    unsigned long tempoLimite = millis() + 5000; // Espera no máximo 5 segundos
+    while (!respostaRecebida && millis() < tempoLimite) {
+      client.poll(); // Precisa disso aqui pra que o callback seja chamado
+      //delay(10);     // Pequeno delay para evitar travar o loop
+      delay(1);
+    }
+
+    if (respostaRecebida) {
+      // Pode fazer algo com respostaServidor
+    } else {
+      Serial.println("Tempo de espera da resposta excedido.");
+    }
+  } else {
+    client.connect(websockets_server_host, websockets_server_port, "/");
+    Serial.println("Conectando novamente");
+    delay(500);
+  }
+
+  //delay(10); // Ajuste conforme necessário
+}

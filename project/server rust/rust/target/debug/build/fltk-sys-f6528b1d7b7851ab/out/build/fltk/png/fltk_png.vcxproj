@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C9032878-ED8F-36DE-BC65-EBE9DFE01854}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>fltk_png</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\lib\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fltk_png.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fltk_pngd</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\lib\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fltk_png.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fltk_png</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\lib\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">fltk_png.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">fltk_png</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\lib\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">fltk_png.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">fltk_png</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) -Brepro /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4099;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) -Brepro -Brepro /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4099;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization></Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) -Brepro /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DisableSpecificWarnings>4099;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);NDEBUG;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) -Brepro /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4099;4996</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);NDEBUG;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;FL_LIBRARY;HAVE_PNG_H=1;HAVE_PNG_GET_VALID=1;HAVE_PNG_SET_TRNS_TO_ALPHA=1;WIN32_LEAN_AND_MEAN;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\zlib;C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk/fltk/png/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk "-BC:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build" --check-stamp-file "C:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build/fltk/png/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\png\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk/fltk/png/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk "-BC:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build" --check-stamp-file "C:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build/fltk/png/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\png\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk/fltk/png/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk "-BC:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build" --check-stamp-file "C:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build/fltk/png/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\png\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk/fltk/png/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/note/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.10/cfltk "-BC:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build" --check-stamp-file "C:/Users/note/Documents/Faculdade/Bengala Fecaf/projeto - Rust/project/server rust/rust/target/debug/build/fltk-sys-f6528b1d7b7851ab/out/build/fltk/png/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\png\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\png.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngerror.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngget.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngmem.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngpread.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngread.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngrio.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngrtran.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngrutil.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngset.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngtrans.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngwio.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngwrite.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngwtran.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\pngwutil.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\arm\arm_init.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\arm\filter_neon_intrinsics.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\arm\palette_neon_intrinsics.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\powerpc\powerpc_init.c" />
+    <ClCompile Include="C:\Users\note\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\fltk-sys-1.5.10\cfltk\fltk\png\powerpc\filter_vsx_intrinsics.c" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\ZERO_CHECK.vcxproj">
+      <Project>{764BC58A-14DA-31FB-B1A5-A70BDACCE992}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\note\Documents\Faculdade\Bengala Fecaf\projeto - Rust\project\server rust\rust\target\debug\build\fltk-sys-f6528b1d7b7851ab\out\build\fltk\zlib\fltk_z.vcxproj">
+      <Project>{56763633-01EC-37BD-92FB-87F2D31F7823}</Project>
+      <Name>fltk_z</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
