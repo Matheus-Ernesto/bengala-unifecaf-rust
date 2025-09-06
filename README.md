@@ -1,6 +1,6 @@
 PT-BR
 # bengala-fecaf
-Projeto com Arduino + Servidor que identifica objetos pertos de colidir, usando ESP32, YOLOv5nu e MiDas.
+Projeto com Arduino + Servidor que identifica objetos pertos de colidir, usando ESP32, YOLOv5nu e MiDas. Versão em Rust.
 
 ![frente](photos/1.png)
 ![aberto](photos/2.png)
