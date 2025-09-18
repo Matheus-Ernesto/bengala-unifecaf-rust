@@ -15,7 +15,7 @@ class Server:
         # Modelos de IA (YOLO e MiDaS)
         self.yolo = None
         self.midas = None
-        self.ip = "192.168.92.154"
+        self.ip = "10.251.246.154"
         self.port = 8765
 
         # Verbosidade ativa: exibe mais informações no terminal

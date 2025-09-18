@@ -18,7 +18,7 @@ midas.tipo_modelo = "midas_v21_small_256"
 # Carrega o modelo na RAM
 midas.carregar()
 # Avalia uma imagem dentro de uma pasta, ou várias dentro de uma pasta
-midas.avaliar("images/output/")
+# midas.avaliar("images/output/")
 
 # Fim do padrão do Midas --------------------------------------------------------
 
@@ -33,7 +33,7 @@ yolo.modelo = "yolov5nu.pt"
 # Carrega o modelo na RAM
 yolo.carregar()
 # Avalia uma imagem
-yolo.avaliar("images/output/output.jpg")
+# yolo.avaliar("images/output/output.jpg")
 
 # Fim do padrão do Midas --------------------------------------------------------
 
@@ -47,6 +47,7 @@ server.yolo = yolo
 server.midas = midas
 # Marca se deseja ver todos os logs ou apenas os FPS.
 server.verbose = True
+server.ip = "192.168.10.4"
 
 # Fim do padrão do servidor --------------------------------------------------------
 
