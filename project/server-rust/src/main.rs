@@ -20,7 +20,7 @@ impl ImageUpdater {
         let base_dir = std::env::current_dir().unwrap();
 
         let rel_paths = vec![
-            ("Notebook".to_string(), "images/notebook/output.jpg"),
+            ("Notebook".to_string(), "images/photos/output.jpg"),
             ("YOLO".to_string(), "images/runs_yolo/output.jpg"),
             ("MiDaS".to_string(), "images/runs_midas/output.png"),
         ];

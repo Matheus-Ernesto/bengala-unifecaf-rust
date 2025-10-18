@@ -56,8 +56,6 @@ class Server:
                     fps = 1000 / elapsed_time_ms if elapsed_time_ms > 0 else 0
                     self._last_request_time = current_time
 
-                    print(f"##### Tempo entre requisições: {elapsed_time_ms:.2f} ms | FPS: {fps:.2f} #####")
-
                     # Caminhos para processamento das imagens
                     IMAGE_PATH_MIDAS = "images/photos/"
                     IMAGE_PATH_YOLO = "images/photos/output.jpg"
@@ -89,7 +87,7 @@ class Server:
                             # Encontra o pixel mais claro (mais próximo)
                             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(cropped_image)
 
-                            if self.verbose: print(f"O pixel mais branco tem valor: {max_val} (escala de 0 a 255)")
+                            if self.verbose: print(f"O pixel mais branco tem valor: {max_val} (escala de 0 a 255) - ##### Tempo entre requisições: {elapsed_time_ms:.2f} ms | FPS: {fps:.2f} #####")
 
                             # Se o pixel mais claro for acima de um limiar, ativa o motor
                             ativar_motor = max_val >= 200

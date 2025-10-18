@@ -1,20 +1,23 @@
 #include "esp_camera.h"
 #include <WiFi.h>
 #include <ArduinoWebsockets.h>
+#include "esp_sleep.h"
+#include "soc/rtc.h"
 
 using namespace websockets;
 
+// ===== CONFIGURAÇÕES DE REDE =====
 const char* ssid = "CASA-2.4G";
 const char* password = "25122003";
 const char* ws_host = "192.168.10.4";
 const uint16_t ws_port = 8765;
+// =================================
 
 WebsocketsClient client;
-
 volatile bool respostaRecebida = false;
 String respostaServidor;
 
-// Config da câmera
+// ===== CONFIGURAÇÃO DA CÂMERA =====
 camera_config_t config = {
   .pin_pwdn       = 32,
   .pin_reset      = -1,
@@ -36,13 +39,14 @@ camera_config_t config = {
   .ledc_timer     = LEDC_TIMER_0,
   .ledc_channel   = LEDC_CHANNEL_0,
   .pixel_format   = PIXFORMAT_JPEG,
-  .frame_size     = FRAMESIZE_QVGA,
-  .jpeg_quality   = 20,
+  .frame_size     = FRAMESIZE_QVGA, // resolução baixa para economizar CPU
+  .jpeg_quality   = 25,             // qualidade moderada para economia de energia
   .fb_count       = 1
 };
+// =================================
 
-// Intervalo entre envios em ms (3 fps ≈ 500ms)
-const unsigned long intervaloEnvio = 500;
+// Intervalo entre envios em ms (3 fps)
+const unsigned long intervaloEnvio = 333;
 
 void conectarWiFi() {
   WiFi.begin(ssid, password);
@@ -62,9 +66,13 @@ void conectarWebSocket() {
 }
 
 void setup() {
+  // Reduz CPU para 80 MHz
+  setCpuFrequencyMhz(80);
+
   Serial.begin(115200);
   Serial.setDebugOutput(false);
 
+  // Inicializa câmera
   if (esp_camera_init(&config) != ESP_OK) {
     Serial.println("Falha na inicialização da câmera");
     return;
@@ -90,7 +98,7 @@ void loop() {
   static unsigned long ultimoEnvio = 0;
   client.poll();
 
-  // envia apenas se o intervalo tiver passado
+  // Verifica se já passou o intervalo entre envios
   if (millis() - ultimoEnvio >= intervaloEnvio) {
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
@@ -99,6 +107,7 @@ void loop() {
       return;
     }
 
+    // Envia imagem
     client.sendBinary((const char*)fb->buf, fb->len);
     esp_camera_fb_return(fb);
     ultimoEnvio = millis();
@@ -119,5 +128,10 @@ void loop() {
     }
   }
 
-  delay(10); // delay leve para não travar CPU
+  // Entra em light sleep por um curto período para economizar energia
+  unsigned long sleep_ms = intervaloEnvio - (millis() - ultimoEnvio);
+  if (sleep_ms > 5) { // não dorme se quase na hora do próximo envio
+    esp_sleep_enable_timer_wakeup(sleep_ms * 1000);
+    esp_light_sleep_start();
+  }
 }
