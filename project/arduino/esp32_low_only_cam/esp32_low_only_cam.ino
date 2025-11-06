@@ -43,11 +43,7 @@ camera_config_t config = {
   .fb_count       = 1
 };
 // =================================
-
-// ===== Pinos do ultrassônico =====
-#define TRIG_PIN 0
-#define ECHO_PIN 16
-
+=
 // Intervalo entre envios em ms (≈3 fps)
 const unsigned long intervaloEnvio = 333;
 
@@ -70,19 +66,6 @@ void conectarWebSocket() {
   }
 }
 
-// ===== Função para ler distância em cm =====
-float lerDistanciaCM() {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-
-  long duracao = pulseIn(ECHO_PIN, HIGH, 25000UL); // timeout 25ms
-  if (duracao == 0) return -1; // timeout
-  return duracao * 0.0343 / 2.0;
-}
-
 // ===== Setup =====
 void setup() {
   setCpuFrequencyMhz(80);
@@ -101,10 +84,6 @@ void setup() {
     s->set_contrast(s, 1);
     s->set_saturation(s, 1);
   }
-
-  // Inicializa pinos do ultrassônico
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
 
   conectarWiFi();
   conectarWebSocket();
