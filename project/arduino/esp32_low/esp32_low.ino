@@ -66,11 +66,35 @@ void conectarWebSocket() {
     Serial.println("Falha na conexão WebSocket");
   }
 }
+void enviar() {
+  // Captura imagem
+  camera_fb_t *fb = esp_camera_fb_get();
+  if (!fb || !fb->buf || fb->len == 0) {
+    Serial.println("Falha ao capturar imagem ou buffer inválido");
+    if (fb) esp_camera_fb_return(fb);
+    delay(200);
+    return;
+  }
+
+  client.sendBinary((const char*)fb->buf, fb->len);
+  esp_camera_fb_return(fb);
+}
+
+void receber() {
+  client.onMessage([](WebsocketsMessage msg){
+    respostaServidor = msg.data();
+    respostaRecebida = true;
+    Serial.print("Resposta do servidor: ");
+    Serial.print(respostaServidor);
+    Serial.print(" ===============================================\n");
+  });
+}
+
 // ===== Setup =====
 void setup() {
   setCpuFrequencyMhz(80);
   Serial.begin(115200);
-  Serial.setDebugOutput(false);
+  Serial.setDebugOutput(false); 
 
   //============= Memoria =====================
   Serial.println(esp_get_free_heap_size());
@@ -92,10 +116,6 @@ void setup() {
   conectarWiFi();
   conectarWebSocket();
 
-  client.onMessage([](WebsocketsMessage msg){
-    respostaServidor = msg.data();
-    respostaRecebida = true;
-  });
 }
 
 // ===== Loop =====
@@ -105,37 +125,6 @@ void loop() {
   Serial.printf(" - PSRAM livre: %u bytes", heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
   Serial.printf(" - Heap livre: %u bytes", esp_get_free_heap_size());
 
-  static unsigned long ultimoEnvio = 0;
-  client.poll();
-
-  if (millis() - ultimoEnvio >= intervaloEnvio) {
-    // Captura imagem
-    camera_fb_t *fb = esp_camera_fb_get();
-    if (!fb || !fb->buf || fb->len == 0) {
-      Serial.println("Falha ao capturar imagem ou buffer inválido");
-      if (fb) esp_camera_fb_return(fb);
-      delay(200);
-      return;
-    }
-
-    client.sendBinary((const char*)fb->buf, fb->len);
-    esp_camera_fb_return(fb);
-    ultimoEnvio = millis();
-
-    // Espera resposta do servidor
-    respostaRecebida = false;
-    unsigned long tempoLimite = millis() + 3000;
-    while (!respostaRecebida && millis() < tempoLimite) {
-      client.poll();
-      delay(1);
-    }
-
-    if (respostaRecebida) {
-      Serial.print("Resposta do servidor: ");
-      Serial.println(respostaServidor);
-      Serial.print(" ===============================================");
-    } else {
-      Serial.println("Sem resposta do servidor");
-    }
-  }
+  enviar();
+  receber();
 }
