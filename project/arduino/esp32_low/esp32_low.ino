@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <ArduinoWebsockets.h>
 #include "soc/rtc.h"
+#include "esp_heap_caps.h"
 
 using namespace websockets;
 
@@ -44,10 +45,6 @@ camera_config_t config = {
 };
 // =================================
 
-// ===== Pinos do ultrassônico =====
-#define TRIG_PIN 0
-#define ECHO_PIN 16
-
 // Intervalo entre envios em ms (≈3 fps)
 const unsigned long intervaloEnvio = 333;
 
@@ -69,25 +66,15 @@ void conectarWebSocket() {
     Serial.println("Falha na conexão WebSocket");
   }
 }
-
-// ===== Função para ler distância em cm =====
-float lerDistanciaCM() {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-
-  long duracao = pulseIn(ECHO_PIN, HIGH, 25000UL); // timeout 25ms
-  if (duracao == 0) return -1; // timeout
-  return duracao * 0.0343 / 2.0;
-}
-
 // ===== Setup =====
 void setup() {
   setCpuFrequencyMhz(80);
   Serial.begin(115200);
   Serial.setDebugOutput(false);
+
+  //============= Memoria =====================
+  Serial.println(esp_get_free_heap_size());
+  Serial.printf("Heap mínima registrada: %u bytes\n", esp_get_minimum_free_heap_size());
 
   // Inicializa câmera
   if (esp_camera_init(&config) != ESP_OK) {
@@ -102,10 +89,6 @@ void setup() {
     s->set_saturation(s, 1);
   }
 
-  // Inicializa pinos do ultrassônico
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-
   conectarWiFi();
   conectarWebSocket();
 
@@ -117,6 +100,11 @@ void setup() {
 
 // ===== Loop =====
 void loop() {
+  //============= Memoria =====================
+  Serial.printf("DRAM livre: %u bytes", heap_caps_get_free_size(MALLOC_CAP_8BIT));
+  Serial.printf(" - PSRAM livre: %u bytes", heap_caps_get_free_size(MALLOC_CAP_SPIRAM));
+  Serial.printf(" - Heap livre: %u bytes", esp_get_free_heap_size());
+
   static unsigned long ultimoEnvio = 0;
   client.poll();
 
@@ -145,6 +133,7 @@ void loop() {
     if (respostaRecebida) {
       Serial.print("Resposta do servidor: ");
       Serial.println(respostaServidor);
+      Serial.print(" ===============================================");
     } else {
       Serial.println("Sem resposta do servidor");
     }
