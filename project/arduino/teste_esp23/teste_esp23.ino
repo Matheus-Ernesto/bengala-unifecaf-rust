@@ -4,8 +4,8 @@
 #include "soc/rtc.h"
 #include "esp_heap_caps.h"
 
-TaskHandle_t Task1;  // Tarefa no Core 0
-TaskHandle_t Task2;  // Tarefa no Core 1
+TaskHandle_t Task1;  // Core 0
+TaskHandle_t Task2;  // Core 1
 
 using namespace websockets;
 
@@ -16,7 +16,16 @@ const char* ws_host = "192.168.10.4";
 const uint16_t ws_port = 8765;
 // =================================
 
+// ===== PINOS DO ULTRASSÔNICO =====
+#define TRIG_PIN 14
+#define ECHO_PIN 15
+// =================================
+
 WebsocketsClient client;
+volatile bool wsConnected = false;
+volatile bool wsShouldReconnect = false;
+unsigned long lastWsReconnectAttempt = 0;
+const unsigned long wsReconnectIntervalMs = 2000;
 
 camera_config_t config = {
   .pin_pwdn       = 32,
@@ -49,25 +58,37 @@ void conectarWiFi() {
   WiFi.begin(ssid, password);
   Serial.print("Conectando Wi-Fi");
   while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
+    vTaskDelay(250 / portTICK_PERIOD_MS);
     Serial.print(".");
   }
   Serial.println("\nWiFi conectado");
 }
 
+void conectarWebSocketOnce() {
+  if (client.connect(ws_host, ws_port, "/")) {
+    Serial.println("Conectado ao servidor WebSocket");
+    wsConnected = true;
+    wsShouldReconnect = false;
+  } else {
+    Serial.println("Falha na conexão WebSocket inicial");
+    wsConnected = false;
+    wsShouldReconnect = true;
+    lastWsReconnectAttempt = millis();
+  }
+}
+
 void conectarWebSocket() {
   client.onEvent([](WebsocketsEvent event, String data){
     if (event == WebsocketsEvent::ConnectionOpened) {
-      Serial.println("✅ WebSocket conectado");
+      Serial.println("WebSocket conectado (event)");
+      wsConnected = true;
+      wsShouldReconnect = false;
     } 
     else if (event == WebsocketsEvent::ConnectionClosed) {
-      Serial.println("⚠️ Conexão WebSocket encerrada, tentando reconectar...");
-      // tenta reconectar em background
-      while (!client.connect(ws_host, ws_port, "/")) {
-        Serial.println("Tentando reconectar...");
-        delay(2000);
-      }
-      Serial.println("Reconectado com sucesso!");
+      Serial.println("Conexão WebSocket encerrada (event)");
+      wsConnected = false;
+      wsShouldReconnect = true;
+      lastWsReconnectAttempt = millis();
     } 
     else if (event == WebsocketsEvent::GotPing) {
       Serial.println("Ping recebido");
@@ -77,11 +98,7 @@ void conectarWebSocket() {
     }
   });
 
-  if (client.connect(ws_host, ws_port, "/")) {
-    Serial.println("✅ Conectado ao servidor WebSocket");
-  } else {
-    Serial.println("❌ Falha na conexão WebSocket inicial");
-  }
+  conectarWebSocketOnce();
 }
 
 void ligarCamera() {
@@ -89,7 +106,6 @@ void ligarCamera() {
     Serial.println("Falha na inicialização da câmera");
     return;
   }
-
   sensor_t *s = esp_camera_sensor_get();
   if (s) {
     s->set_brightness(s, 1);
@@ -99,12 +115,13 @@ void ligarCamera() {
 }
 
 void enviar() {
-  // Captura imagem
+  if (WiFi.status() != WL_CONNECTED || !wsConnected || !client.available()) return;
+
   camera_fb_t *fb = esp_camera_fb_get();
   if (!fb || !fb->buf || fb->len == 0) {
-    Serial.println("Falha ao capturar imagem ou buffer inválido");
+    Serial.println("Falha ao capturar imagem");
     if (fb) esp_camera_fb_return(fb);
-    delay(200);
+    vTaskDelay(200 / portTICK_PERIOD_MS);
     return;
   }
 
@@ -114,79 +131,97 @@ void enviar() {
 
 void receber() {
   client.onMessage([](WebsocketsMessage msg){
-    String respostaServidor = msg.data();
     Serial.print("Resposta do servidor: ");
-    Serial.print(respostaServidor);
-    Serial.print(" ===============================================\n");
+    Serial.println(msg.data());
   });
 }
 
-void getMemory() {
-  Serial.printf(
-    "DRAM livre: %.2f KB - PSRAM livre: %.2f KB - Heap livre: %.2f KB\n",
-    heap_caps_get_free_size(MALLOC_CAP_8BIT) / 1024.0,
-    heap_caps_get_free_size(MALLOC_CAP_SPIRAM) / 1024.0,
-    esp_get_free_heap_size() / 1024.0
-  );
+// ===== LEITURA ULTRASSÔNICO =====
+
+float lerDistanciaCM() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  long duracao = pulseIn(ECHO_PIN, HIGH, 30000); // timeout de 30ms
+  if (duracao == 0) return -1; // sem leitura válida
+  float distancia = duracao * 0.0343 / 2.0;
+  return distancia;
 }
+// =================================
 
 void setup() {
   setCpuFrequencyMhz(80);
   Serial.begin(115200);
-  delay(1000);
+  vTaskDelay(1000 / portTICK_PERIOD_MS);
 
   Serial.println("Iniciando tarefas nos dois núcleos...");
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
 
   ligarCamera();
   conectarWiFi();
   conectarWebSocket();
+  receber();
 
-  // Cria uma tarefa no Core 0
-  xTaskCreatePinnedToCore(
-    loopCore0,     // Função da tarefa
-    "Core0Loop",   // Nome da tarefa
-    10000,         // Tamanho da stack
-    NULL,          // Parâmetro
-    1,             // Prioridade
-    &Task1,        // Handle da tarefa
-    0              // Núcleo 0
-  );
-
-  // Cria uma tarefa no Core 1
-  xTaskCreatePinnedToCore(
-    loopCore1,     // Função da tarefa
-    "Core1Loop",   // Nome da tarefa
-    10000,
-    NULL,
-    1,
-    &Task2,
-    1              // Núcleo 1
-  );
+  xTaskCreatePinnedToCore(loopCore0, "Core0Loop", 32000, NULL, 1, &Task1, 0);
+  xTaskCreatePinnedToCore(loopCore1, "Core1Loop", 8000, NULL, 0, &Task2, 1);
 }
 
 void loop() {
-  // O loop principal pode ficar vazio ou fazer algo simples
-  getMemory();
-  delay(5000);
+  vTaskDelay(portMAX_DELAY);
 }
 
 // ===== Tarefa no Core 0 =====
-// TIRAR FOTO
 void loopCore0(void * parameter) {
   while (true) {
     Serial.print("Core 0 rodando -> ");
     Serial.println(xPortGetCoreID());
-    enviar();
-    delay(500);  // Espera 1 segundo
+
+    if (WiFi.status() == WL_CONNECTED && wsConnected && client.available()) {
+      enviar();
+    }
+    vTaskDelay(500 / portTICK_PERIOD_MS);
   }
 }
 
 // ===== Tarefa no Core 1 =====
-// RECEBER RESULTADO
 void loopCore1(void * parameter) {
   while (true) {
     Serial.print("Core 1 rodando -> ");
     Serial.println(xPortGetCoreID());
-    delay(1000);  // Espera 0.5s
+
+    client.poll();
+
+    // Leitura do ultrassônico
+    
+    float distancia = lerDistanciaCM();
+    if (distancia > 0) {
+      Serial.printf("Distância: %.2f cm\n", distancia);
+    } else {
+      Serial.println("Sem retorno do sensor");
+    }
+    
+
+    // Reconexão websocket se necessário
+    if (wsShouldReconnect && (millis() - lastWsReconnectAttempt >= wsReconnectIntervalMs)) {
+      Serial.println("Tentando reconectar WebSocket...");
+      lastWsReconnectAttempt = millis();
+      if (client.connect(ws_host, ws_port, "/")) {
+        Serial.println("Reconectado com sucesso (task)!");
+        wsConnected = true;
+        wsShouldReconnect = false;
+      } else {
+        Serial.println("Reconexão falhou (task)...");
+        wsConnected = false;
+        wsShouldReconnect = true;
+      }
+    }
+
+    vTaskDelay(500 / portTICK_PERIOD_MS);
   }
 }
+
