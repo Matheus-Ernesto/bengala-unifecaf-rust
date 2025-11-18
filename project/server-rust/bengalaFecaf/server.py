@@ -6,8 +6,26 @@ import websockets         # Comunicação via WebSocket
 import os                 # Manipulação de diretórios e arquivos
 import cv2                # OpenCV: processamento de imagem
 
+import aiohttp
+from datetime import datetime
+
 # Adiciona a pasta 'bengalaFecaf' ao caminho de importação
 sys.path.append('bengalaFecaf')
+
+# Função para enviar IP para o PHP
+async def enviar_ip_para_php(ip):
+    url = 'https://matheusernestodev.com.br/bengalaunifecaf/salvar.php'  # Ajuste para o caminho do seu PHP
+    
+    try:
+        async with aiohttp.ClientSession() as session:
+            data = {'ip': ip}
+            async with session.post(url, data=data) as response:
+                resultado = await response.json()
+                print(f"Resposta do PHP: {resultado}")
+                return resultado
+    except Exception as e:
+        print(f"Erro ao enviar IP para PHP: {e}")
+        return None
 
 # Classe principal do servidor WebSocket
 class Server:
@@ -38,6 +56,16 @@ class Server:
         async def echo(websocket):
             connected_clients.add(websocket)
             print("Novo cliente conectado")
+            
+            # Parte de Cloud
+            
+            client_ip = websocket.remote_address[0]
+            client_port = websocket.remote_address[1]
+            
+            print(f"Novo cliente conectado - IP: {client_ip}:{client_port}")
+            
+            # Envia o IP para o PHP salvar
+            await enviar_ip_para_php(client_ip)
 
             try:
                 # Loop para escutar mensagens (imagens) do cliente
