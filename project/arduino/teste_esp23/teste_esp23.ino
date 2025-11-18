@@ -48,8 +48,8 @@ camera_config_t config = {
   .ledc_timer     = LEDC_TIMER_0,
   .ledc_channel   = LEDC_CHANNEL_0,
   .pixel_format   = PIXFORMAT_JPEG,
-  .frame_size     = FRAMESIZE_QVGA,
-  .jpeg_quality   = 40,
+  .frame_size     = FRAMESIZE_VGA,
+  .jpeg_quality   = 20,
   .fb_count       = 1
 };
 
@@ -178,8 +178,8 @@ void loop() {
 // ===== Tarefa no Core 0 =====
 void loopCore0(void * parameter) {
   while (true) {
-    Serial.print("Core 0 rodando -> ");
-    Serial.println(xPortGetCoreID());
+    //Serial.print("Core 0 rodando -> ");
+    //Serial.println(xPortGetCoreID());
 
     if (WiFi.status() == WL_CONNECTED && wsConnected && client.available()) {
       enviar();
@@ -191,8 +191,8 @@ void loopCore0(void * parameter) {
 // ===== Tarefa no Core 1 =====
 void loopCore1(void * parameter) {
   while (true) {
-    Serial.print("Core 1 rodando -> ");
-    Serial.println(xPortGetCoreID());
+    //Serial.print("Core 1 rodando -> ");
+    //Serial.println(xPortGetCoreID());
 
     client.poll();
 

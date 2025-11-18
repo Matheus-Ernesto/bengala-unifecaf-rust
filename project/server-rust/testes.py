@@ -18,7 +18,7 @@ midas.tipo_modelo = "midas_v21_small_256"
 # Carrega o modelo na RAM
 midas.carregar()
 # Avalia uma imagem dentro de uma pasta, ou várias dentro de uma pasta
-midas.avaliar("images/output/")
+midas.avaliar("images/notebook/")
 
 # Fim do padrão do Midas --------------------------------------------------------
 
@@ -33,20 +33,20 @@ yolo.modelo = "yolov5nu.pt"
 # Carrega o modelo na RAM
 yolo.carregar()
 # Avalia uma imagem
-yolo.avaliar("images/photos/output.jpg")
+yolo.avaliar("images/notebook/teste1.jpeg")
 
 # Fim do padrão do Midas --------------------------------------------------------
 
-server = Server()
+#server = Server()
 
 # Padrão do servidor ---------------------------------------------------------------
 
 # Atribui o yolo ao servidor, se passado None, o servidor não carregará nenhum Yolo.
-server.yolo = yolo
+#server.yolo = yolo
 # Atribui o midas ao servidor, se passado None, o servidor não carregará nenhum Midas.
 #server.midas = midas
 # Marca se deseja ver todos os logs ou apenas os FPS.
-server.verbose = True
+#server.verbose = True
 
 # Fim do padrão do servidor --------------------------------------------------------
 
@@ -57,5 +57,5 @@ server.verbose = True
 
 # Inicia o servidor, parando a thread principal nesse comando, nada mais deve ser rodado
 # após esse comando, ou deve ser iniciado em outra thread.
-server.iniciar()
+#server.iniciar()
 
