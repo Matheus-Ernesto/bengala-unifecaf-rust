@@ -5,6 +5,8 @@ import asyncio            # Trabalhar com operações assíncronas
 import websockets         # Comunicação via WebSocket
 import os                 # Manipulação de diretórios e arquivos
 import cv2                # OpenCV: processamento de imagem
+from bengalaFecaf.detector_envio import DetectorEnvio
+
 
 import aiohttp
 from datetime import datetime
@@ -41,6 +43,13 @@ class Server:
 
         # Tempo da última requisição (para cálculo de FPS)
         self._last_request_time = time.time()
+        
+        self.detector_envio = DetectorEnvio(
+            url_php="https://matheusernestodev.com.br/bengalaunifecaf/salvarimagem.php",
+            cooldown=20,
+            threshold=0.80
+        )
+
     
     # Função que inicia o servidor
     def iniciar(self):
@@ -89,7 +98,13 @@ class Server:
                     IMAGE_PATH_YOLO = "images/photos/output.jpg"
 
                     # Avalia com YOLO (detecção de objetos)
-                    if self.yolo: self.yolo.avaliar(IMAGE_PATH_YOLO)
+                    if self.yolo:
+                        objs = self.yolo.avaliar(IMAGE_PATH_YOLO)
+                        # Crie uma instância em __init__ do Server:
+                        await self.detector_envio.processar(
+                            resultados_yolo=objs,
+                            img_path="images/runs_yolo/output.jpg"
+                        )
 
                     # Avalia com MiDaS (profundidade)
                     if self.midas: self.midas.avaliar(IMAGE_PATH_MIDAS)

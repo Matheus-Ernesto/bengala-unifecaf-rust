@@ -67,27 +67,40 @@ class Yolo:
             self._model = YOLO(os.path.join("bengalaFecaf","weights", self.modelo))
         return None
     
-    # Método para fazer a detecção de objetos em uma imagem
     def avaliar(self, image): 
-        with ocultar_prints(): # Ocultar mensagens durante a avaliação
+        with ocultar_prints():
             try:
-                # Executa o modelo na imagem recebida
+                # Roda o modelo
                 results = self._model(image)
-                print("Teste de resultados:")
 
-                # Salva a imagem de saída em um diretório específico
-                os.makedirs("images/runs_yolo", exist_ok=True)
+                deteccoes = []   # Lista final com objetos detectados
 
-                # Salva a imagem de saída com os resultados
-                # Se não houver resultados, não salva a imagem
                 if results and len(results) > 0:
-                    results[0].save(filename=os.path.join("images", "runs_yolo", "output.jpg"))
+                    boxes = results[0].boxes
+                    names = self._model.names  # dicionário {id: nome}
 
-                # Limpa os resultados para liberar memória
+                    for box in boxes:
+                        classe_id = int(box.cls[0])
+                        nome_classe = names.get(classe_id, "desconhecido")
+                        confianca = float(box.conf[0])
+                        x1, y1, x2, y2 = box.xyxy[0].tolist()  # Bounding box
+
+                        deteccoes.append({
+                            "classe_id": classe_id,
+                            "classe": nome_classe,
+                            "confianca": confianca,
+                            "bbox": [x1, y1, x2, y2]
+                        })
+
+                    # Salva imagem com bounding boxes
+                    results[0].save(filename="images/runs_yolo/output.jpg")
+
+                # Limpeza
                 del results
-                gc.collect() # Força a limpeza da memória
-                return None
-            # Se ocorrer um erro durante a avaliação, imprime o erro
-            # Isso pode ocorrer se a imagem não for válida ou se o modelo falhar
+                gc.collect()
+
+                return deteccoes
+
             except Exception as e:
                 print(f"Erro ao avaliar a imagem: {e}")
+                return []

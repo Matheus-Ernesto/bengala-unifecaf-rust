@@ -5,6 +5,8 @@ from bengalaFecaf.yolo import Yolo
 # Importa IA Midas
 from bengalaFecaf.midas import Midas
 
+from bengalaFecaf.detector_envio import DetectorEnvio
+
 # Cria a IA Midas
 midas = Midas()
 
@@ -46,7 +48,7 @@ server.yolo = yolo
 # Atribui o midas ao servidor, se passado None, o servidor não carregará nenhum Midas.
 server.midas = midas
 # Marca se deseja ver todos os logs ou apenas os FPS.
-server.verbose = True
+server.verbose = False
 server.ip = "192.168.10.4"
 
 # Fim do padrão do servidor --------------------------------------------------------
