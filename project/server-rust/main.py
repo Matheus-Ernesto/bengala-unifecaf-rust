@@ -48,7 +48,7 @@ server.yolo = yolo
 # Atribui o midas ao servidor, se passado None, o servidor não carregará nenhum Midas.
 server.midas = midas
 # Marca se deseja ver todos os logs ou apenas os FPS.
-server.verbose = False
+server.verbose = True
 server.ip = "192.168.10.4"
 
 # Fim do padrão do servidor --------------------------------------------------------
