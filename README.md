@@ -1,5 +1,5 @@
 PT-BR
-# bengala-fecaf
+# bengala-unifecaf
 Projeto com Arduino + Servidor que identifica objetos pertos de colidir, usando ESP32, YOLOv5nu e MiDas. Versão em Rust.
 
 ![frente](photos/1.png)
@@ -19,7 +19,7 @@ Surge da necessidade de aumentar a autonomia, segurança e acessibilidade para p
 Deficientes visuais, Este sistema é projetado para pessoas cegas ou com baixa visão, auxiliando na mobilidade segura em ambientes internos e externos.
 
 #### Como?
-O projeto consiste em um equipamento com dois sensores, sendo o sensor ultrassônico HCSR04, que permite detectar distâncias até 4 metros, e uma câmera ESP32, que captura as imagens, e usando a internet, envia elas ao servidor, este servidor processa as imagens com o YOLOv5nu (detecção de objetos) e o MiDas (profundidade de campo) e retorna ao ESP32 avisando se tem objetos próximos na imagem ou não. Além dos sensores, o equipamento conta com um motor de vibração para alertar o usuário se tiver objetos perto, vibrando a bengala, e sua bateria (uma pilha de 9V). Para melhor teste do equipamento, ele também utiliza dois LEDs, um para trâfego e indicação de resultados no código, outro para erros e saber se está ligado corretamente.
+O projeto consiste em um equipamento com dois sensores, sendo o sensor ultrassônico HCSR04, que permite detectar distâncias até 4 metros, e uma câmera ESP32, que captura as imagens, e usando a internet, envia elas ao servidor, este servidor processa as imagens com o YOLOv5nu (detecção de objetos) e o MiDas (profundidade de campo) e retorna ao ESP32 avisando se tem objetos próximos na imagem ou não. Além dos sensores, o equipamento conta com um motor de vibração para alertar o usuário se tiver objetos perto, vibrando a bengala, e sua bateria (pilhas 18650).
 
 ---------
 
@@ -41,7 +41,7 @@ Componentes do Hardware:
 - Sensor ultrassônico HCSR04: Sensor ultrassônico com trigger e echo, um dos mais famosos e utilizados.
 - Motor cc: Um mini motor cc, simples, ligado ao ESP32 por meio de um transistor NPN (BCE) para não ter problemas de corrente elétrica.
 - LEDs: Luzes apenas para testes e verificação de erros.
-- Bateria: Bateria 9V para energizar tudo.
+- Bateria: 4 pilhas 18650 para o ESP32 e uma para o motor.
 
 #### Software
 
@@ -55,24 +55,28 @@ Softwares que estamos usando e bibliotecas/repositórios:
 
 Configura o ESP32-CAM (AI-Thinker) para capturar imagens e enviá-las para o servidor Flask.
 
-* Conecta-se ao Wi-Fi usando o SSID e senha.
-* Inicializa a câmera, ajustando brilho, contraste e qualidade da imagem.
-* Faz leitura do HCSR04 para saber se tem objetos perto.
-* Captura imagens a cada 500ms e envia para o servidor Flask:
-1. O ESP tira uma foto usando a câmera.
-2. Converte a imagem para o formato JPEG.
-3. Envia a imagem via HTTP POST para `http://localhost/processar`.
-4. Exibe no Serial Monitor a resposta do servidor.
+1. Conecta-se ao Wi-Fi usando o SSID e senha.
+2. Inicializa a câmera, ajustando brilho, contraste e qualidade da imagem.
+3. Faz leitura do HCSR04 para saber se tem objetos perto.
+4. Captura imagens a cada 500ms e envia para o servidor Flask:
+5. O ESP tira uma foto usando a câmera.
+6. Converte a imagem para o formato JPEG.
+7. Envia a imagem via HTTP POST para `http://localhost/processar`.
+8. Exibe no Serial Monitor a resposta do servidor.
 
 #### Servidor
 Recebe imagens enviadas pelo ESP32-CAM.
-* Carrega os modelos MiDas e Yolov5nu
-* Servidor: `http://localhost/processar`.
-1. Salva a imagem em photos/output.png
-2. Processa a imagem com o YOLOv5nu para detectar objetos.
-3. Processa a imagem com o MiDas para pegar a profundidade e a distância mais próxima.
-3. Exibe os resultados no terminal.
-4. Retorna para o Esp32, com um valor de 0 a 255, indicando a proximidade mínima.
+
+1. Carrega os modelos MiDas e Yolov5nu.
+2. Servidor: `http://localhost/processar`.
+3. Ao se conectar a algum cliente, envia o IP a um servidor remoto
+3. Recebe imagem do ESP32
+4. Salva a imagem em photos/output.png
+5. Processa a imagem com o YOLOv5nu para detectar objetos.
+6. Processa a imagem com o MiDas para pegar a profundidade e a distância mais próxima.
+7. Exibe os resultados no terminal.
+8. Se tiver pessoas identificadas pelo yolo com mais de 80% de certeza, sobe a foto em um servidor remoto.
+9. Retorna para o Esp32, com um valor de 0 a 255, indicando a proximidade mínima.
 
 ## Melhorias já implementadas
 
