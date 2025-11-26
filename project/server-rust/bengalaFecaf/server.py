@@ -136,9 +136,6 @@ class Server:
                             ativar_motor = max_val >= 200
                             await websocket.send("true" if ativar_motor else "false")
 
-                    # Mensagem de confirmação para o cliente
-                    await websocket.send("false")
-
             except websockets.exceptions.ConnectionClosed as e:
                 print(f"Cliente desconectado: {e}")
             finally:

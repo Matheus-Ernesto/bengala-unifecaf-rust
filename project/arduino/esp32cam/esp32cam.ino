@@ -19,6 +19,7 @@ const uint16_t ws_port = 8765;
 // ===== PINOS DO ULTRASSÔNICO =====
 #define TRIG_PIN 14
 #define ECHO_PIN 15
+#define LED_PIN 4
 // =================================
 
 WebsocketsClient client;
@@ -133,6 +134,11 @@ void receber() {
   client.onMessage([](WebsocketsMessage msg){
     Serial.print("Resposta do servidor: ");
     Serial.println(msg.data());
+    if (msg.data() == "true") {
+      digitalWrite(LED_PIN, HIGH);
+      vTaskDelay(50 / portTICK_PERIOD_MS);
+      digitalWrite(LED_PIN, LOW);
+    }
   });
 }
 
@@ -161,6 +167,7 @@ void setup() {
 
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
 
   ligarCamera();
   conectarWiFi();
@@ -201,6 +208,10 @@ void loopCore1(void * parameter) {
     float distancia = lerDistanciaCM();
     if (distancia > 0) {
       Serial.printf("Distância: %.2f cm\n", distancia);
+    } if (distancia > 0 && distancia < 100) {
+      digitalWrite(LED_PIN, HIGH);
+      vTaskDelay(500 / portTICK_PERIOD_MS);
+      digitalWrite(LED_PIN, LOW);
     } else {
       Serial.println("Sem retorno do sensor");
     }
