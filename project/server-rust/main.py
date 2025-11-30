@@ -49,7 +49,7 @@ server.yolo = yolo
 server.midas = midas
 # Marca se deseja ver todos os logs ou apenas os FPS.
 server.verbose = True
-server.ip = "192.168.10.4"
+server.ip = "10.66.193.154"
 
 # Fim do padrão do servidor --------------------------------------------------------
 

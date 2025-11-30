@@ -10,9 +10,9 @@ TaskHandle_t Task2;  // Core 1
 using namespace websockets;
 
 // ===== CONFIGURAÇÕES DE REDE =====
-const char* ssid = "CASA-2.4G";
-const char* password = "25122003";
-const char* ws_host = "192.168.10.4";
+const char* ssid = "POCOX7Pro";
+const char* password = "batatacomchocolate";
+const char* ws_host = "10.66.193.154";
 const uint16_t ws_port = 8765;
 // =================================
 
@@ -20,6 +20,9 @@ const uint16_t ws_port = 8765;
 #define TRIG_PIN 14
 #define ECHO_PIN 15
 #define LED_PIN 4
+
+
+
 // =================================
 
 WebsocketsClient client;
@@ -29,29 +32,29 @@ unsigned long lastWsReconnectAttempt = 0;
 const unsigned long wsReconnectIntervalMs = 2000;
 
 camera_config_t config = {
-  .pin_pwdn       = 32,
-  .pin_reset      = -1,
-  .pin_xclk       = 0,
-  .pin_sscb_sda   = 26,
-  .pin_sscb_scl   = 27,
-  .pin_d7         = 35,
-  .pin_d6         = 34,
-  .pin_d5         = 39,
-  .pin_d4         = 36,
-  .pin_d3         = 21,
-  .pin_d2         = 19,
-  .pin_d1         = 18,
-  .pin_d0         = 5,
-  .pin_vsync      = 25,
-  .pin_href       = 23,
-  .pin_pclk       = 22,
-  .xclk_freq_hz   = 20000000,
-  .ledc_timer     = LEDC_TIMER_0,
-  .ledc_channel   = LEDC_CHANNEL_0,
-  .pixel_format   = PIXFORMAT_JPEG,
-  .frame_size     = FRAMESIZE_VGA,
-  .jpeg_quality   = 20,
-  .fb_count       = 1
+  .pin_pwdn = 32,
+  .pin_reset = -1,
+  .pin_xclk = 0,
+  .pin_sscb_sda = 26,
+  .pin_sscb_scl = 27,
+  .pin_d7 = 35,
+  .pin_d6 = 34,
+  .pin_d5 = 39,
+  .pin_d4 = 36,
+  .pin_d3 = 21,
+  .pin_d2 = 19,
+  .pin_d1 = 18,
+  .pin_d0 = 5,
+  .pin_vsync = 25,
+  .pin_href = 23,
+  .pin_pclk = 22,
+  .xclk_freq_hz = 20000000,
+  .ledc_timer = LEDC_TIMER_0,
+  .ledc_channel = LEDC_CHANNEL_0,
+  .pixel_format = PIXFORMAT_JPEG,
+  .frame_size = FRAMESIZE_VGA,
+  .jpeg_quality = 20,
+  .fb_count = 1
 };
 
 // ===== Funções =====
@@ -79,22 +82,19 @@ void conectarWebSocketOnce() {
 }
 
 void conectarWebSocket() {
-  client.onEvent([](WebsocketsEvent event, String data){
+  client.onEvent([](WebsocketsEvent event, String data) {
     if (event == WebsocketsEvent::ConnectionOpened) {
       Serial.println("WebSocket conectado (event)");
       wsConnected = true;
       wsShouldReconnect = false;
-    } 
-    else if (event == WebsocketsEvent::ConnectionClosed) {
+    } else if (event == WebsocketsEvent::ConnectionClosed) {
       Serial.println("Conexão WebSocket encerrada (event)");
       wsConnected = false;
       wsShouldReconnect = true;
       lastWsReconnectAttempt = millis();
-    } 
-    else if (event == WebsocketsEvent::GotPing) {
+    } else if (event == WebsocketsEvent::GotPing) {
       Serial.println("Ping recebido");
-    } 
-    else if (event == WebsocketsEvent::GotPong) {
+    } else if (event == WebsocketsEvent::GotPong) {
       Serial.println("Pong recebido");
     }
   });
@@ -107,7 +107,7 @@ void ligarCamera() {
     Serial.println("Falha na inicialização da câmera");
     return;
   }
-  sensor_t *s = esp_camera_sensor_get();
+  sensor_t* s = esp_camera_sensor_get();
   if (s) {
     s->set_brightness(s, 1);
     s->set_contrast(s, 1);
@@ -118,7 +118,7 @@ void ligarCamera() {
 void enviar() {
   if (WiFi.status() != WL_CONNECTED || !wsConnected || !client.available()) return;
 
-  camera_fb_t *fb = esp_camera_fb_get();
+  camera_fb_t* fb = esp_camera_fb_get();
   if (!fb || !fb->buf || fb->len == 0) {
     Serial.println("Falha ao capturar imagem");
     if (fb) esp_camera_fb_return(fb);
@@ -131,7 +131,7 @@ void enviar() {
 }
 
 void receber() {
-  client.onMessage([](WebsocketsMessage msg){
+  client.onMessage([](WebsocketsMessage msg) {
     Serial.print("Resposta do servidor: ");
     Serial.println(msg.data());
     if (msg.data() == "true") {
@@ -145,14 +145,18 @@ void receber() {
 // ===== LEITURA ULTRASSÔNICO =====
 
 float lerDistanciaCM() {
+  // Envia pulso no TRIG
   digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
+  delayMicroseconds(5);
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
 
-  long duracao = pulseIn(ECHO_PIN, HIGH, 30000); // timeout de 30ms
-  if (duracao == 0) return -1; // sem leitura válida
+  // Mede o tempo do pulso no ECHO (timeout 30ms)
+  long duracao = pulseIn(ECHO_PIN, HIGH, 30000);
+  if (duracao == 0) return -1;  // sem retorno
+
+  // Converte tempo em distância
   float distancia = duracao * 0.0343 / 2.0;
   return distancia;
 }
@@ -183,7 +187,7 @@ void loop() {
 }
 
 // ===== Tarefa no Core 0 =====
-void loopCore0(void * parameter) {
+void loopCore0(void* parameter) {
   while (true) {
     //Serial.print("Core 0 rodando -> ");
     //Serial.println(xPortGetCoreID());
@@ -196,26 +200,37 @@ void loopCore0(void * parameter) {
 }
 
 // ===== Tarefa no Core 1 =====
-void loopCore1(void * parameter) {
+void loopCore1(void* parameter) {
   while (true) {
     //Serial.print("Core 1 rodando -> ");
     //Serial.println(xPortGetCoreID());
-
     client.poll();
+    // ===== LEITURA ULTRASSÔNICO =====
 
-    // Leitura do ultrassônico
-    
+    static unsigned long ultimoBlink = 0;
+    static bool ledAtivo = false;
+    static unsigned long tempoLedOn = 0;
+
     float distancia = lerDistanciaCM();
+
     if (distancia > 0) {
       Serial.printf("Distância: %.2f cm\n", distancia);
-    } if (distancia > 0 && distancia < 100) {
-      digitalWrite(LED_PIN, HIGH);
-      vTaskDelay(500 / portTICK_PERIOD_MS);
-      digitalWrite(LED_PIN, LOW);
+
+      // Ativar LED se for menor que 100 cm
+      if (distancia < 100 && !ledAtivo) {
+        digitalWrite(LED_PIN, HIGH);
+        ledAtivo = true;
+        tempoLedOn = millis();  // registra momento que ligou
+      }
     } else {
       Serial.println("Sem retorno do sensor");
     }
-    
+
+    // Desligar o LED após 1500 ms (sem travar o loop)
+    if (ledAtivo && millis() - tempoLedOn >= 1500) {
+      digitalWrite(LED_PIN, LOW);
+      ledAtivo = false;
+    }
 
     // Reconexão websocket se necessário
     if (wsShouldReconnect && (millis() - lastWsReconnectAttempt >= wsReconnectIntervalMs)) {

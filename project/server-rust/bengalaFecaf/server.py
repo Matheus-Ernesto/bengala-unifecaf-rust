@@ -79,6 +79,8 @@ class Server:
             try:
                 # Loop para escutar mensagens (imagens) do cliente
                 async for message in websocket:
+                    
+                        
                     # Cria o diretório de imagens, se ainda não existir
                     output_dir = "images/photos"
                     os.makedirs(output_dir, exist_ok=True)
@@ -87,6 +89,19 @@ class Server:
                     with open(os.path.join(output_dir, "output.jpg"), "wb") as f:
                         f.write(message)
 
+                    imagem_path = "images/photos/output.jpg"
+
+                    # Carrega a imagem
+                    img = cv2.imread(imagem_path)
+
+                    if img is None:
+                        print("Erro: não foi possível carregar a imagem.")
+                    else:
+                        # Aplica flip vertical (0 = vertical)
+                        img_flip = cv2.flip(img, 0)
+
+                        # Salva a imagem corrigida
+                        cv2.imwrite("images/photos/output.jpg", img_flip)
                     # Calcula o tempo entre requisições e o FPS
                     current_time = time.time()
                     elapsed_time_ms = (current_time - self._last_request_time) * 1000
@@ -115,6 +130,7 @@ class Server:
                         image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  # Lê em tons de cinza
                         colored_output = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
                         # Caminho final
+                        
                         cv2.imwrite(f"images/runs_midas/output.png", colored_output)
                         if image is None:
                             print("Erro ao carregar a imagem.")

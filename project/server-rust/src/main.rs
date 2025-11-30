@@ -45,7 +45,6 @@
         ) -> Option<egui::TextureHandle> {
             let bytes = std::fs::read(path).ok()?;
 
-            // Carrega a imagem como está, sem filtros e sem resize
             let img = image::load_from_memory(&bytes).ok()?;
             let rgba = img.to_rgba8();
             let size = [img.width() as usize, img.height() as usize];
@@ -76,7 +75,6 @@
                     self.images.insert(name.clone(), texture);
                     self.mtimes.insert(name.clone(), mtime);
 
-                    // 🔥 ISSO FORÇA REDESENHO MESMO SEM MEXER O MOUSE
                     ctx.request_repaint();
                 }
             }
@@ -98,7 +96,7 @@
                             if let Some(Some(tex)) = self.images.get(name) {
                                 ui.add(
                                     egui::Image::new(tex)
-                                        .max_size(egui::vec2(500.0, 400.0))
+                                        .max_size(egui::vec2(400.0, 300.0))
                                 );
                             } else {
                                 ui.label("(sem arquivo/erro)");
@@ -119,6 +117,6 @@
         eframe::run_native(
             "Visualizador de Imagens - Notebook / YOLO / MiDaS",
             native_options,
-            Box::new(|cc| Ok(Box::new(ImageUpdater::new(cc)))), // ✅ corrigido
+            Box::new(|cc| Ok(Box::new(ImageUpdater::new(cc)))),
         )
     }
